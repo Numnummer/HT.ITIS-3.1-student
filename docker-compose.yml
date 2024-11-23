@@ -9,6 +9,12 @@ services:
     
   dotnet_rabbitmq:
     image: rabbitmq:3-alpine
+    environment:
+      RABBITMQ_DEFAULT_USER: rabbit
+      RABBITMQ_DEFAULT_PASS: rabbit1
+    ports:
+      - "5672:5672"
+      - "15672:15672"
     
   dotnet_minio:
     image: minio/minio:latest
@@ -24,14 +30,32 @@ services:
       context: "."
       dockerfile: "Dotnet.Homeworks.MainProject/Dockerfile"
     ports:
-      - "8080:80"
+      - "8081:80"
     environment:
+      RabbitConfig__Username: rabbit
+      RabbitConfig__Password: rabbit1
+      RabbitConfig__Hostname: dotnet_rabbitmq
       ConnectionStrings__Default: Host=dotnet_postgres;Port=5432;Database=Hw2;Username=postgres;Password=postgres1
     depends_on:
+      - dotnet_rabbitmq
       - dotnet_postgres
     
   dotnet_mailing:
-    image: dotnet-web
+    build:
+      context: "."
+      dockerfile: "Dotnet.Homeworks.Mailing.API/Dockerfile"
+    ports:
+      - "8080:80"
+    environment:
+      EmailConfig__Email: your_email@example.com
+      EmailConfig__Host: smtp.example.com
+      EmailConfig__Port: 587
+      EmailConfig__Password: your_email_password
+      RabbitConfig__Username: rabbit
+      RabbitConfig__Password: rabbit1
+      RabbitConfig__Hostname: dotnet_rabbitmq
+    depends_on:
+      - dotnet_rabbitmq
     
   dotnet_storage:
     image: dotnet-web
