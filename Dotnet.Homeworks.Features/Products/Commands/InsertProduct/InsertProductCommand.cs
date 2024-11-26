@@ -1,6 +1,9 @@
+using Dotnet.Homeworks.Shared.Dto;
+using MediatR;
+
 namespace Dotnet.Homeworks.Features.Products.Commands.InsertProduct;
 
-public class InsertProductCommand //TODO: Inherit certain interface 
+public class InsertProductCommand : IRequest<Result>
 {
     public string Name { get; init; }
 

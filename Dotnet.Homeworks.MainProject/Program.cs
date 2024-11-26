@@ -1,4 +1,5 @@
 using Dotnet.Homeworks.Data.DatabaseContext;
+using Dotnet.Homeworks.Infrastructure.UnitOfWork;
 using Dotnet.Homeworks.MainProject.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddSingleton<IRegistrationService, RegistrationService>();
 builder.Services.AddSingleton<ICommunicationService, CommunicationService>();
+builder.Services.AddSingleton<IUnitOfWork, UnitOfWork>();
+builder.Services.AddMediatR(config =>
+{
+    config.RegisterServicesFromAssembly(
+        Dotnet.Homeworks.Features.Helpers.AssemblyReference.Assembly);
+});
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie();

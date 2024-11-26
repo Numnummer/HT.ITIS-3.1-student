@@ -1,5 +1,9 @@
+using Dotnet.Homeworks.Shared.Dto;
+using MediatR;
+
 namespace Dotnet.Homeworks.Features.Products.Queries.GetProducts;
 
-public class GetProductsQuery //TODO: Query returns GetProductsDto. Inherit certain interface 
+public class GetProductsQuery : IRequest<Result<GetProductsDto>>
 {
+    
 }
