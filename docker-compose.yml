@@ -2,6 +2,10 @@ version: '3.8'
 services:
   dotnet_postgres:
     image: postgres:alpine
+    environment:
+      POSTGRES_DB: "Hw2"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres1"
     
   dotnet_rabbitmq:
     image: rabbitmq:3-alpine
@@ -16,7 +20,15 @@ services:
     image: jaegertracing/all-in-one:latest
     
   dotnet_main:
-    image: dotnet-web
+    build:
+      context: "."
+      dockerfile: "Dotnet.Homeworks.MainProject/Dockerfile"
+    ports:
+      - "8080:80"
+    environment:
+      ConnectionStrings__Default: Host=dotnet_postgres;Port=5432;Database=Hw2;Username=postgres;Password=postgres1
+    depends_on:
+      - dotnet_postgres
     
   dotnet_mailing:
     image: dotnet-web
