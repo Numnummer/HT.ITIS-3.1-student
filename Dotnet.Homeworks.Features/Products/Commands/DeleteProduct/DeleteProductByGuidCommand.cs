@@ -1,6 +1,8 @@
+using MediatR;
+
 namespace Dotnet.Homeworks.Features.Products.Commands.DeleteProduct;
 
-public class DeleteProductByGuidCommand //TODO: Inherit certain interface 
+public class DeleteProductByGuidCommand : IRequest
 {
     public Guid Guid { get; init; }
 
