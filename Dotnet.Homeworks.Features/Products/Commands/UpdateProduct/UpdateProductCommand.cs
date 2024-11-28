@@ -1,6 +1,9 @@
+using Dotnet.Homeworks.Shared.Dto;
+using MediatR;
+
 namespace Dotnet.Homeworks.Features.Products.Commands.UpdateProduct;
 
-public class UpdateProductCommand //TODO: Inherit certain interface 
+public class UpdateProductCommand : IRequest<Result>
 {
     public Guid Guid { get; init; }
     public string Name { get; init; }
